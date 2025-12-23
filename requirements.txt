@@ -1,0 +1,18 @@
+# LLM & RAG
+langchain
+langchain-community
+chromadb
+sentence-transformers
+
+# PDF Processing
+pypdf2
+
+# Financial Data
+yfinance
+pandas
+
+# UI
+streamlit
+
+# Ollama
+ollama
