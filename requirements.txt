@@ -1,18 +1,29 @@
-# LLM & RAG
-langchain
-langchain-community
-chromadb
-sentence-transformers
+# Core dependencies
+langchain>=0.1.0
+langchain-community>=0.0.13
+langchain-text-splitters>=0.0.1
 
-# PDF Processing
-pypdf2
+# Embeddings & Vector stores
+sentence-transformers>=2.2.0
+faiss-cpu>=1.7.4
+# Alternative: chromadb>=0.4.0
 
-# Financial Data
-yfinance
-pandas
+# PDF processing
+pypdf>=3.17.0
+# Alternative: PyPDF2>=3.0.0
 
-# UI
-streamlit
+# LLM Integration
+huggingface-hub>=0.19.0
 
-# Ollama
-ollama
+# Web interface
+streamlit>=1.29.0
+
+plotly>=5.18.0
+
+# Financial data
+yfinance>=0.2.31
+
+# Utilities
+python-dotenv>=1.0.0
+numpy>=1.24.0
+pandas>=2.0.0
