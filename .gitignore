@@ -1,5 +1,31 @@
+# Python
 __pycache__/
-*.pyc
-data/*.pdf
-chroma_db/
+*.py[cod]
+*.pyd
+*.egg-info/
+.venv/
+venv/
+
+# Environment
 .env
+
+# Test / run outputs
+*_test.txt
+
+# Streamlit
+.streamlit/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local data (keep folder but not contents)
+data/*
+!data/.gitkeep
+
+# Local vector index (keep folder but not contents)
+vectorstore/*
+!vectorstore/.gitkeep
+
+# LangChain / vector DB caches (optional)
+chroma_db/
