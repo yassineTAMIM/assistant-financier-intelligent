@@ -52,7 +52,28 @@ Conformément aux consignes :
 | Visualisation              | Plotly                                   |
 | PDF Loader                 | PyPDF                                    |
 
+## 📄 Documents Financiers Inclus (Démo Immédiate)
 
+Le repository contient déjà **10 rapports financiers réels** dans le dossier `data/` :
+
+- `2025-Earnings-Release-Final.pdf`
+- `3Q25-Slides-WPRT-FINAL.pdf`
+- `2025-FY-Results-Press-Release.pdf`
+- `2025q3-alphabet-earnings-release.pdf`
+- `2025q3release.pdf`
+- `FY2025-4th-Quarter-Earnings-Release.pdf`
+- `q2-2025-earnings-release.pdf`
+- `Q3-2025-Earnings-Release.pdf`
+- `Q4-2025-Earnings-Release_vF.pdf`
+- `Workday-Announces-Fiscal-2026-Third-Quarter-Financial-Results-11-25-2025-2025.pdf`
+
+**Avantage** : L’application fonctionne immédiatement sans configuration supplémentaire.  
+Il suffit de cliquer sur **"Reconstruire l'index"** dans la sidebar pour indexer ces documents et activer le chat RAG + recherche dans les PDFs.
+
+Vous pouvez bien sûr remplacer ou ajouter vos propres rapports dans `data/` et reconstruire l’index.
+
+**Application déployée** :  
+👉 https://assistant-financier-intelligent-qf896jlgajqwkacvfb7nc7.streamlit.app/
 
 ## 📁 Structure des Fichiers
 
