@@ -95,7 +95,31 @@ assistant-financier-intelligent/
 └── README.md
 ```
 
+## 📐 Documentation UML
 
+Pour une meilleure compréhension de l'architecture et des interactions du système, quatre diagrammes UML ont été réalisés à l'aide de PlantUML :
+
+### 1. Diagramme de Classes
+Représente les principales classes du projet (`FinancialRAG`, `FinancialLLM`, `FinancialAgent`) et leurs relations avec l'interface Streamlit.
+
+![Diagramme de Classes](diagrams/class-diagram.png)
+
+### 2. Diagramme de Cas d'Utilisation
+Illustre les fonctionnalités principales accessibles à l'utilisateur final (chat, analyse d'entreprise, comparaison, recherche dans documents).
+
+![Diagramme de Cas d'Utilisation](diagrams/use-case-diagram.png)
+
+### 3. Diagramme de Séquence – Processus RAG
+Décrit le flux complet du pipeline RAG : chargement des PDFs, découpage, indexation vectorielle (FAISS), et recherche sémantique lors d'une question.
+
+![Diagramme de Séquence - Processus RAG](diagrams/sequence-rag.png)
+
+### 4. Diagramme de Séquence – Processus Agent Financier
+Montre les interactions entre l'interface, l'agent, et l'API yfinance lors de l'analyse d'une entreprise ou d'une comparaison multi-tickers.
+
+![Diagramme de Séquence - Processus Agent Financier](diagrams/sequence-agent.png)
+
+Ces diagrammes facilitent la compréhension de l'architecture modulaire et des deux processus complexes du système : **retrieval-augmented generation** et **analyse financière en temps réel**.
 
 ## ⚙️ Installation et Lancement
 
