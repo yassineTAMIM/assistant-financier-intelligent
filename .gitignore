@@ -19,9 +19,6 @@ venv/
 .DS_Store
 Thumbs.db
 
-# Local data (keep folder but not contents)
-data/*
-!data/.gitkeep
 
 # Local vector index (keep folder but not contents)
 vectorstore/*
