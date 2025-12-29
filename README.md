@@ -119,8 +119,6 @@ Montre les interactions entre l'interface, l'agent, et l'API yfinance lors de l'
 
 ![Diagramme de Séquence - Processus Agent Financier](diagrams/sequence-agent.png)
 
-Ces diagrammes facilitent la compréhension de l'architecture modulaire et des deux processus complexes du système : **retrieval-augmented generation** et **analyse financière en temps réel**.
-
 ## ⚙️ Installation et Lancement
 
 ### 1. Prérequis
