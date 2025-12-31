@@ -15,8 +15,8 @@ class FinancialRAG:
     
     def __init__(self, 
                  embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2",
-                 chunk_size: int = 1000,
-                 chunk_overlap: int = 200):
+                 chunk_size: int = 1500,  # Augmenté pour capturer tableaux
+                 chunk_overlap: int = 300):  # Augmenté pour continuité
         """
         Initialise le pipeline RAG
         

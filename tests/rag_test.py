@@ -32,8 +32,8 @@ def test_1_initialization():
     try:
         rag = FinancialRAG(
             embedding_model="sentence-transformers/all-MiniLM-L6-v2",
-            chunk_size=1000,
-            chunk_overlap=200
+            chunk_size=1500,
+            chunk_overlap=300
         )
         print("✅ Initialisation réussie")
         return rag

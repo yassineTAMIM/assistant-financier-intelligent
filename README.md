@@ -46,7 +46,7 @@ Conformément aux consignes :
 | Framework RAG & LLM        | LangChain                                |
 | Vector Store               | FAISS (local)                            |
 | Embeddings                 | sentence-transformers/all-MiniLM-L6-v2   |
-| LLM local                  | Ollama (phi3:mini recommandé)            |
+| LLM local                  | Ollama (mistral recommandé)            |
 | Données boursières         | yfinance                                 |
 | Interface web              | Streamlit                                |
 | Visualisation              | Plotly                                   |
@@ -125,7 +125,7 @@ Montre les interactions entre l'interface, l'agent, et l'API yfinance lors de l'
 
 - Python 3.10 ou supérieur
 - Ollama installé et lancé[](https://ollama.com)
-- Modèle recommandé : `ollama pull phi3:mini`
+- Modèle recommandé : `ollama pull mistral`
 
 ### 2. Cloner le projet
 
@@ -182,7 +182,7 @@ L’interface s’ouvre automatiquement dans votre navigateur.
 
 ## 📊 Métriques de Performance
 
-Les performances du système ont été évaluées à travers des suites de tests complets sur les trois modules principaux : **RAG**, **Agent Financier** et **LLM (phi3:mini via Ollama)**. Tous les tests ont réussi, démontrant la robustesse et l'efficacité du pipeline.
+Les performances du système ont été évaluées à travers des suites de tests complets sur les trois modules principaux : **RAG**, **Agent Financier** et **LLM (mistral via Ollama)**. Tous les tests ont réussi, démontrant la robustesse et l'efficacité du pipeline.
 
 ### 1. Performances du Pipeline RAG (rag_test.py)
 
@@ -219,7 +219,7 @@ Les performances du système ont été évaluées à travers des suites de tests
 | 6 mois  | +36.25        | 1.36           | 200.66       | 286.19       |
 | 1 an    | +7.45         | 2.05           | 171.83       | 286.19       |
 
-### 3. Performances du LLM (llm_test.py - Modèle phi3:mini)
+### 3. Performances du LLM (llm_test.py - Modèle mistral)
 
 | Test                              | Temps d'Inférence | Notes                                      |
 |-----------------------------------|-------------------|--------------------------------------------|
@@ -234,7 +234,7 @@ Les performances du système ont été évaluées à travers des suites de tests
 
 ## ⚠️ Limitations Connues
 - Les calculs de ROE/ROA/Dette peuvent parfois échouer si yfinance ne retourne pas les états financiers complets (fallback sur valeurs approximatives).
-- Temps de réponse du LLM variable selon la charge CPU (phi3:mini en local).
+- Temps de réponse du LLM variable selon la charge CPU (mistral en local).
 - Le RAG est limité aux documents placés dans `data/`.
 
 ## 🤝 Contributeurs

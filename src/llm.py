@@ -16,12 +16,12 @@ class FinancialLLM:
     Gestionnaire LLM pour générer des réponses intelligentes
     """
     
-    def __init__(self, model_name: str = "phi3:mini", use_ollama: bool = True):
+    def __init__(self, model_name: str = "mistral", use_ollama: bool = True):  # Changé à mistral pour meilleur perf
         """
         Initialise le LLM
         
         Args:
-            model_name: Nom du modèle Ollama (llama2, mistral, phi3:mini)
+            model_name: Nom du modèle Ollama (mistral recommandé pour finance)
             use_ollama: Utiliser Ollama si disponible
         """
         self.model_name = model_name
@@ -31,7 +31,7 @@ class FinancialLLM:
         if self.use_ollama:
             try:
                 print(f"🤖 Initialisation du LLM: {model_name}...")
-                self.llm = Ollama(model=model_name, temperature=0.7)
+                self.llm = Ollama(model=model_name, temperature=0.3)  # Température baissée pour plus de précision
                 print(f"✅ LLM {model_name} prêt")
             except Exception as e:
                 print(f"⚠️  Échec de connexion à Ollama: {e}")
@@ -44,22 +44,28 @@ class FinancialLLM:
         
         Args:
             question: Question de l'utilisateur
-            context: Contexte extrait du RAG
+            context: Contexte extrait du RAG (avec métadonnées)
             
         Returns:
             Réponse générée
         """
         if self.use_ollama and self.llm:
             try:
-                # Créer le prompt
-                prompt = f"""Tu es un assistant financier expert. Utilise le contexte suivant pour répondre à la question de manière claire et précise.
+                # Prompt amélioré
+                prompt = f"""Tu es un analyste financier expert et précis. Utilise exclusivement le contexte fourni pour répondre à la question.
 
-Contexte:
-{context[:2000]}
+Règles importantes :
+- Si le contexte contient des chiffres de revenus, croissance, segments, cite-les clairement avec la source (nom du fichier et page).
+- Si plusieurs documents mentionnent des valeurs différentes, priorise le rapport le plus récent ou pertinent (ex: Q3/Q4 earnings release).
+- Si l'information exacte n'est pas présente, dis "Non mentionné explicitement dans les documents fournis" sans spéculer.
+- Sois concis, professionnel et chiffré. Structure ta réponse : Résumé + Détails + Sources.
 
-Question: {question}
+Contexte (plusieurs documents) :
+{context[:6000]}  # Augmenté à 6000 pour mistral
 
-Réponse (sois concis et professionnel):"""
+Question : {question}
+
+Réponse :"""
                 
                 response = self.llm.invoke(prompt)
                 return response
@@ -84,22 +90,16 @@ Réponse (sois concis et professionnel):"""
         if not context:
             return "Je n'ai pas trouvé d'informations pertinentes dans les documents pour répondre à cette question."
         
-        # Extraction simple de chiffres et mots-clés
-        response = "📊 **Informations trouvées dans les documents:**\n\n"
-        
-        # Prendre les premières lignes pertinentes
-        lines = context.split('\n')[:5]
-        for line in lines:
-            if line.strip():
-                response += f"• {line.strip()}\n"
-        
-        response += "\n💡 *Pour une analyse plus approfondie, utilisez les onglets d'analyse.*"
-        
+        # Extraction basique améliorée en fallback
+        metrics = self.extract_key_metrics(context)
+        response = "Réponse fallback basée sur le contexte :\n"
+        for key, value in metrics.items():
+            response += f"- {key.capitalize()}: {value}\n"
         return response
     
     def summarize_document(self, text: str, max_length: int = 200) -> str:
         """
-        Résume un texte
+        Résume un document financier
         
         Args:
             text: Texte à résumer
@@ -110,13 +110,13 @@ Réponse (sois concis et professionnel):"""
         """
         if self.use_ollama and self.llm:
             try:
-                prompt = f"Résume ce texte financier en français en {max_length} mots maximum:\n\n{text[:1500]}"
+                prompt = f"Résume ce texte financier en français en {max_length} mots maximum, en mettant l'accent sur les métriques clés (revenus, croissance, bénéfices) :\n\n{text[:3000]}"  # Augmenté pour mistral
                 return self.llm.invoke(prompt)
             except:
                 pass
         
         # Fallback: prendre les premières phrases
-        sentences = text.split('.')[:3]
+        sentences = text.split('.')[:5]
         return '. '.join(sentences) + '.'
     
     def extract_key_metrics(self, text: str) -> dict:
@@ -133,18 +133,19 @@ Réponse (sois concis et professionnel):"""
         
         metrics = {}
         
-        # Patterns courants pour les métriques financières
+        # Patterns améliorés pour finances
         patterns = {
-            'revenue': r'(?:revenue|chiffre d\'affaires|revenus?)[\s:]+(?:\$|€)?[\d,.]+ ?(?:billion|million|B|M)?',
-            'profit': r'(?:profit|bénéfice|net income)[\s:]+(?:\$|€)?[\d,.]+ ?(?:billion|million|B|M)?',
-            'growth': r'(?:growth|croissance)[\s:]+[\d.]+%?',
-            'margin': r'(?:margin|marge)[\s:]+[\d.]+%?'
+            'revenue': r'(?:revenue|total revenue|revenus?|chiffre d\'affaires)[\s:]+(?:\$|€|\£)?[\d,.]+ ?(?:billion|million|thousand|B|M|K)?',
+            'profit': r'(?:profit|bénéfice|net income|net profit)[\s:]+(?:\$|€|\£)?[\d,.]+ ?(?:billion|million|thousand|B|M|K)?',
+            'growth': r'(?:growth|croissance|year-over-year|YoY)[\s:]+[\d.+-]+%?',
+            'margin': r'(?:margin|marge)[\s:]+[\d.+-]+%?',
+            'segments': r'(?:revenue by segment|sources of revenue|revenus par segment)[\s:]+.*'  # Basic for segments
         }
         
         for key, pattern in patterns.items():
-            match = re.search(pattern, text, re.IGNORECASE)
-            if match:
-                metrics[key] = match.group(0)
+            matches = re.findall(pattern, text, re.IGNORECASE)
+            if matches:
+                metrics[key] = ", ".join(matches[:3])  # Prends les 3 premiers matchs
         
         return metrics
     
@@ -160,7 +161,7 @@ def test_llm():
     print("="*60 + "\n")
     
     # Test 1: Initialisation
-    llm = FinancialLLM(model_name="phi3:mini")
+    llm = FinancialLLM(model_name="mistral")
     
     if llm.is_available():
         print("✅ LLM Ollama disponible")
